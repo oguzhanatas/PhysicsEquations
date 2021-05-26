@@ -44,12 +44,10 @@ def radiationCurve(T):
         plt.plot(wavelength_range*1e9,B*(1./1e13),lw=0.75,label=str(i)+' K')#wavelenght in nm and spectral energy density in W.m-3
     cmap=plt.cm.get_cmap('nipy_spectral')
     normalize = mpl.colors.Normalize(vmin=400, vmax=700)
-    for i in np.arange(400,750,50):
+    for i in np.arange(400,750,10):
         plt.fill_betweenx(B,i,i+50,color=cmap(normalize(i)),alpha=0.15,edgecolor=None)
     for i,j in zip([250,500,1000],['ultra-violet','visible','infrared']):
-        plt.text(i,(max(B)/1e13)/2,j,rotation=90,alpha=0.5,fontsize=15)
-
-
+        plt.text(i,(max(B)/1e13)/2,j,rotation=90,alpha=0.5,fontsize=15,fontstyle='oblique')
     plt.xlabel('wavelength (nm)')
     plt.ylabel('Spectral Energy Density (10$^{13}$ W m$^{-3}$)')
     plt.ylim(0.,max(B)/1e13+0.1)
