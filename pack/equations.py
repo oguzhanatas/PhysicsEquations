@@ -1,5 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+from sympy import rotations
+
 
 
 from pack import constant
@@ -38,9 +41,15 @@ def radiationCurve(T):
     for i in T:
         B=((2.*constant.h_plank*constant.c**2.)/(wavelength_range**5.))/(np.exp((E)/(constant.k_boltzman*i))-1.)
         B=np.array(B,dtype=np.float128)
-        plt.plot(wavelength_range*1e9,B*(1./1e13),lw=0.5,label=str(i)+' K')#wavelenght in nm and spectral energy density in W.m-3
-    for i,j in zip([[400,500],[500,600],[600,700]],['b','g','r']):
-        plt.fill_betweenx(B,i[0],i[1],color=j,edgecolor=None,alpha=0.2)
+        plt.plot(wavelength_range*1e9,B*(1./1e13),lw=0.75,label=str(i)+' K')#wavelenght in nm and spectral energy density in W.m-3
+    cmap=plt.cm.get_cmap('nipy_spectral')
+    normalize = mpl.colors.Normalize(vmin=400, vmax=700)
+    for i in np.arange(400,750,50):
+        plt.fill_betweenx(B,i,i+50,color=cmap(normalize(i)),alpha=0.15,edgecolor=None)
+    for i,j in zip([250,500,1000],['ultra-violet','visible','infrared']):
+        plt.text(i,(max(B)/1e13)/2,j,rotation=90,alpha=0.5,fontsize=15)
+
+
     plt.xlabel('wavelength (nm)')
     plt.ylabel('Spectral Energy Density (10$^{13}$ W m$^{-3}$)')
     plt.ylim(0.,max(B)/1e13+0.1)
